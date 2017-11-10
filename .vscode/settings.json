@@ -1,0 +1,4 @@
+{
+  "phpcs.standard": "vendor/zenodorus/core/phpcs.xml",
+  "editor.tabSize": 4,
+}
