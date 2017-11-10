@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace Zenodorus\Location;
 
 use \Zenodorus\ZenodorusArguments as Zargs;
@@ -34,6 +34,9 @@ class Phone
     /**
      * Get an HTML element with all the proper telephone
      * schema tags.
+     * 
+     * Note: The displayed version of the phone number
+     * does _not_ include the country code.
      *
      * @param array $args
      * @return void
@@ -46,7 +49,7 @@ class Phone
         return sprintf(
             '<span itemprop="telephone" content="+%s">%s</span>',
             join('', \array_diff($numbers, [false, ''])),
-            join($separator, $numbers)
+            join($separator, \array_diff(array_slice($numbers, 1), [false, '']))
         );
     }
 
@@ -61,7 +64,7 @@ class Phone
     {
         return \json_encode([
             'telephone' => '+' . join(
-                '', 
+                '',
                 \array_diff($Phone->rawPhone($args)->get('num'), [false, ''])
             )
         ]);
