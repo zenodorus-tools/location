@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace Zenodorus\Location;
 
 use \Zenodorus\ZenodorusArguments as Zargs;
@@ -40,8 +40,8 @@ class Address
     {
         $Address = new static;
         return sprtinf(
-            "%s%s", 
-            $url_fragment, 
+            "%s%s",
+            $url_fragment,
             \urlencode(
                 join(
                     ',',
@@ -64,6 +64,25 @@ class Address
     {
         $Address = new static;
         return $Address->addressUrl('https://www.google.com/maps/dir/?api=1&destination=', $args);
+    }
+
+    /**
+     * Returns a string with each section of the address wrapped
+     * in a span.
+     *
+     * @param array $args
+     * @return string
+     */
+    public static function addressElements(array $args)
+    {
+        $Address = new static;
+        $data = $Address->rawAddress($args);
+        $cleaned = \array_diff($data->getAll(), [false]); // Remove elements that aren't defined
+        $compiled = [];
+        foreach ($cleaned as $prop => $value) {
+            $compiled[] = sprintf('<span class="addr-%s">%s</span>', $prop, $value);
+        }
+        return join(PHP_EOL, $compiled);
     }
 
     /**
@@ -92,8 +111,8 @@ class Address
             if ($Address->get($field)) {
                 if (isset($final_schema[$schema_field])) {
                     $final_schema[$schema_field] = sprintf(
-                        "%s, %s", 
-                        $final_schema[$schema_field], 
+                        "%s, %s",
+                        $final_schema[$schema_field],
                         $Address->get($field)
                     );
                 } else {
